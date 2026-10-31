@@ -11,38 +11,32 @@ This project demonstrates how to connect two Amazon Virtual Private Clouds (VPCs
 
 The project uses a Bastion Host, private EC2 instances, route tables, security groups, and a VPC Peering connection.
 
-# Architecture
-
-1. AWS Region: US East (N. Virginia) – us-east-1
-2. VPC-A: 10.10.0.0/16
-3. VPC-A Public Subnet: 10.10.1.0/24
-4. Bastion Host: <YOUR_BASTION_PRIVATE_IP> (Public IP: <YOUR_BASTION_PUBLIC_IP>)
-5. VPC-A Private Subnet: 10.10.2.0/24
-6. App-A EC2: <YOUR_APP_A_PRIVATE_IP>
-7. VPC-B: 10.20.0.0/16
-8. VPC-B Private Subnet: 10.20.1.0/24
-9. App-B EC2: <YOUR_APP_B_PRIVATE_IP>
-10. VPC Peering: Connects VPC-A and VPC-B for private communication.
-11. Internet Gateway: Attached to VPC-A.
-12. Route Tables: Configured in both VPCs to route traffic through the peering connection.
-13. Security Groups: Control SSH and ICMP traffic between EC2 instances.
-    
-## Network Configuration
-
-| Resource | CIDR / Private IP |
-| :--- | :--- |
-| VPC-A | `10.10.0.0/16` |
-| VPC-A Public Subnet | `10.10.1.0/24` |
-| VPC-A Private Subnet | `10.10.2.0/24` |
-| Bastion Host | `<YOUR_BASTION_PRIVATE_IP>` |
-| Bastion Public IP | `<YOUR_BASTION_PUBLIC_IP>` |
-| App-A EC2 | `<YOUR_APP_A_PRIVATE_IP>` |
-| VPC-B | `10.20.0.0/16` |
-| VPC-B Private Subnet | `10.20.1.0/24` |
-| App-B EC2 | `<YOUR_APP_B_PRIVATE_IP>` |
-
-# AWS Services Used
-
+Architecture
+AWS Region: US East (N. Virginia) – us-east-1
+VPC-A: 10.10.0.0/16
+VPC-A Public Subnet: 10.10.1.0/24
+Bastion Host: 10.10.1.93 (Public IP: 98.81.25.69)
+VPC-A Private Subnet: 10.10.2.0/24
+App-A EC2: 10.10.2.153
+VPC-B: 10.20.0.0/16
+VPC-B Private Subnet: 10.20.1.0/24
+App-B EC2: 10.20.1.191
+VPC Peering: Connects VPC-A and VPC-B for private communication.
+Internet Gateway: Attached to VPC-A.
+Route Tables: Configured in both VPCs to route traffic through the peering connection.
+Security Groups: Control SSH and ICMP traffic between EC2 instances.
+Network Configuration
+Resource	CIDR / Private IP
+VPC-A	10.10.0.0/16
+VPC-A Public Subnet	10.10.1.0/24
+VPC-A Private Subnet	10.10.2.0/24
+Bastion Host	10.10.1.93
+Bastion Public IP	98.81.25.69
+App-A EC2	10.10.2.153
+VPC-B	10.20.0.0/16
+VPC-B Private Subnet	10.20.1.0/24
+App-B EC2	10.20.1.191
+AWS Services Used
 Amazon VPC
 
 Amazon EC2
@@ -57,8 +51,7 @@ Security Groups
 
 SSH
 
-# Implementation Steps
-
+Implementation Steps
 Created VPC-A and VPC-B with non-overlapping CIDR blocks.
 
 Created public and private subnets.
@@ -77,22 +70,14 @@ Configured security groups to permit required SSH and ICMP traffic.
 
 Connected to private EC2 instances using SSH.
 
-## Route Table Configuration
-
-### VPC-A Private Route Table
-
-| Destination | Target |
-|---|---|
-| `10.20.0.0/16` | VPC Peering Connection |
-
-### VPC-B Private Route Table
-
-| Destination | Target |
-|---|---|
-| `10.10.0.0/16` | VPC Peering Connection |
-
-# Security Configuration
-
+Route Table Configuration
+VPC-A Private Route Table
+Destination	Target
+10.20.0.0/16	VPC Peering Connection
+VPC-B Private Route Table
+Destination	Target
+10.10.0.0/16	VPC Peering Connection
+Security Configuration
 Security groups are configured to allow only the required traffic.
 
 SSH uses TCP port 22.
@@ -103,25 +88,23 @@ Private EC2 communication uses private IP addresses.
 
 Access is restricted to the required source IP addresses.
 
-# Connectivity Testing
-
+Connectivity Testing
 SSH connection from App-A to App-B:
 
-ssh -i <YOUR_KEY_FILE>.pem ec2-user@<YOUR_APP_B_PRIVATE_IP>
+ssh -i file1.pem ec2-user@10.20.1.191
 
 Ping from App-A to App-B:
 
-ping -c 4 <YOUR_APP_B_PRIVATE_IP>
+ping -c 4 10.20.1.191
 
 Ping from App-B to App-A:
 
-ping -c 4 <YOUR_APP_A_PRIVATE_IP>
+ping -c 4 10.10.2.153
 
-### Testing status:
+Testing status:
 SSH access from App-A to App-B was observed. Successful ICMP ping replies have not yet been confirmed.
 
-# Key Learnings
-
+Key Learnings
 Understanding VPC and subnet architecture.
 
 Creating and configuring EC2 instances.
@@ -138,8 +121,7 @@ Connecting to EC2 instances using SSH.
 
 Understanding private network communication.
 
-# Conclusion
-
-This project demonstrates private communication between two AWS VPCs using VPC Peering. It provides practical experience with AWS networking, EC2, routing, security groups, and secure access to private instances.
+Conclusion
+This project demonstrates private communication between two AWS VPCs using VPC Peering. It provides practical experience with AWS networking, EC2, routing, security groups, and secure access to private instances.security groups, and secure access to private instances.
 
 ### Created by Syed Shahanawaz Hussain
